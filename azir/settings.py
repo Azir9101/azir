@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@=!!*=8(aern)eai&ghz$eu--^!&jboxe!ko+*%%7mrkxebh(d'
+SECRET_KEY = os.getenv('AZIR_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'azir',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -71,17 +73,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'azir.wsgi.application'
 
 
+# rest_framework settings
+
+REST_DRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser'),
+}
+
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'azir',
-        'USER': 'root',
-        'PASSWORD': 'sym900326',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+        'ENGINE': os.getenv('AZIR_DB_ENGINE'), 
+        'NAME': os.getenv('AZIR_NAME'),
+        'USER': os.getenv('AZIR_USER'),
+        'PASSWORD': os.getenv('AZIR_PASSWORD'),
+        'HOST': os.getenv('AZIR_HOST'),   # Or an IP Address that your DB is hosted on
+        'PORT': os.getenv('AZIR_PORT'),
     }
 }
 
@@ -103,6 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'azir.AzirUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -116,6 +125,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
